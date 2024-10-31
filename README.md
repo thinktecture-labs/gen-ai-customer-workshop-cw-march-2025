@@ -1,0 +1,1 @@
+# gen-ai-customer-workshop-november-2024

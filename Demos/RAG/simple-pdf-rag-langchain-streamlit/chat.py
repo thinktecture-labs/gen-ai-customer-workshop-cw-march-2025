@@ -81,9 +81,9 @@ retriever = configure_retriever(uploaded_files)
 
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True, output_key='answer')
 
-llm = ChatOpenAI(#openai_api_base="http://localhost:11434/v1", 
+llm = ChatOpenAI(#base_url="http://localhost:11434/v1", 
                  temperature=0.0,
-                 model="gpt-4o",
+                 model="gpt-4o", #"gemma3:12b-it-fp16"
                  streaming=True)
 
 qa_chain = ConversationalRetrievalChain.from_llm(
@@ -97,7 +97,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 if prompt := st.chat_input("Ask your question:"):
-    prompt = prompt + "\nGive the result in three compact paragraphs. ALWAYS reference the section umber you find the answer in."
+    prompt = prompt + "\nGive the result in three compact paragraphs. ALWAYS anser in the question's original language. ALWAYS reference the section number you find the answer in."
     
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):

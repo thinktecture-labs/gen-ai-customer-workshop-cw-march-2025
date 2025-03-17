@@ -5,6 +5,10 @@ from langchain.schema import HumanMessage, SystemMessage
 from pydantic import BaseModel, Field
 from typing import Literal
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 audio_file= open("./data/bestellung.mp3", "rb")
 bestellung_transcript = openai.audio.transcriptions.create(model="whisper-1", file=audio_file)
 print("*** Transkribierter Text ***:")

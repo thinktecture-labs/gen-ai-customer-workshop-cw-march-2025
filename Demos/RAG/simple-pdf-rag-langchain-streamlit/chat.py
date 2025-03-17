@@ -13,6 +13,10 @@ from langchain_community.vectorstores import FAISS
 
 from dotenv import load_dotenv
 
+## Temp fix for torch classes not being found
+import torch
+torch.classes.__path__ = []
+
 load_dotenv()
 
 st.set_page_config(page_title="Chat with PDF", page_icon="🦜")
@@ -32,7 +36,7 @@ def configure_retriever(uploaded_files):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     splits = text_splitter.split_documents(docs)
 
-    #embeddings = HuggingFaceEmbeddings(model="BAAI/bge-m3")
+    #embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
     embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
     vectordb = FAISS.from_documents(splits, embedding=embeddings)
 

@@ -46,8 +46,8 @@ public class Program
         builder.AddOpenAIChatCompletion(modelName, new Uri(apiEndpoint), apiKey, httpClient: httpClient);
         #pragma warning restore SKEXP0010
 
-        builder.Plugins.AddFromType<EmployeePlugin>();
-        builder.Plugins.AddFromType<BookingPlugin>();
+        builder.Plugins.AddFromType<EmployeePlugin>("Employees");
+        builder.Plugins.AddFromType<BookingPlugin>("Bookings");
 
         return builder.Build();
     }
@@ -60,7 +60,9 @@ public class Program
         Console.WriteLine();
 
         var chatHistory = new ChatHistory();
-        chatHistory.AddSystemMessage("You're a friendly, helpful chat assistant. Only answer questions that relate to your tools, functions, and plugins — no other questions!");
+        chatHistory.AddSystemMessage(@"You're a friendly, helpful chat assistant.
+            Only answer questions that relate to your tools, functions, and plugins — no other questions!
+            Only use the tools you are explicitly provided.");
         chatHistory.AddSystemMessage($"Today is {DateTime.Now:D}.");
 
         var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();

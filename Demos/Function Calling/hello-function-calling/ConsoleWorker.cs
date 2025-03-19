@@ -37,11 +37,11 @@ public class ConsoleWorker : BackgroundService
     {
         // create chat context and add system prompt
         var chatCompletionsOptions = new ChatCompletionsOptions(_modelName, new [] {
-            new ChatRequestSystemMessage("Du bist ein freundlicher, fröhlicher chat-assistent."),
+            new ChatRequestSystemMessage("Du bist ein freundlicher, fröhlicher Chat-Assistent."),
             new ChatRequestSystemMessage($"Heute ist {DateTime.Now:D}."),
         });
 
-        // Use manual entry of the tool
+        // TOOL 1: Use manual entry of the tool
         chatCompletionsOptions.Tools.Add(new ChatCompletionsFunctionToolDefinition()
         {
             Name = "GetEmployeeId",
@@ -59,7 +59,7 @@ public class ConsoleWorker : BackgroundService
             new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, })
         });
 
-        // use reflection to add another tool
+        // TOOL 2: Use reflection to add another tool
         chatCompletionsOptions.Tools.Add(GetType().GetMethod("BookSlot")!.ToDefinition());
 
         bool wasToolCall = false;

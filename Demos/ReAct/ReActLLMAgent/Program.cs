@@ -17,6 +17,6 @@ if (string.IsNullOrEmpty(apiKey))
 var llm = new ChatLlm(apiKey: apiKey);
 
 var agent = new ReActAgent(llm, new List<ITool> { new CalculatorTool() });
-var response = await agent.Run("Calculate sqrt(3 + 5 / 7 * 9) ?");
+var response = await agent.Run("Calculate sqrt(3 + 5 / 7 * 9)");
 
 Console.WriteLine("### " + response);

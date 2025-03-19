@@ -11,8 +11,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from .models import Query
-from .extraction import parse, FlightSearch
+from models import Query
+from extraction import parse, FlightSearch
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

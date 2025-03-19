@@ -2,7 +2,7 @@ import instructor
 from openai import OpenAI
 from datetime import datetime
 from typing import Any
-from .models import FlightSearch
+from models import FlightSearch
 
 client = instructor.patch(OpenAI())
 

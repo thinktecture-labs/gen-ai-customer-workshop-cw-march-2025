@@ -1,8 +1,6 @@
 using System;
 using System.Net;
 
-namespace SimpleFunctionCallingAgentSK;
-
 public class LocalDebuggingProxy : IWebProxy
 {
     public ICredentials? Credentials { get; set; }

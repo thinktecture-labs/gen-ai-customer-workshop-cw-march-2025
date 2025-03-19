@@ -1,8 +1,6 @@
 using System.ComponentModel;
 using Microsoft.SemanticKernel;
 
-namespace SimpleFunctionCallingAgentSK.Plugins;
-
 public class BookingPlugin
 {
     [KernelFunction, Description("Books a meeting slot for another employee at a given date for a given length of time.")]

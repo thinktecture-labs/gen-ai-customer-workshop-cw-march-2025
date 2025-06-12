@@ -9,7 +9,7 @@ public class ChatLlm
     private readonly string _model;
     private readonly float _temperature;
 
-    public ChatLlm(string model = "gpt-3.5-turbo", float temperature = 0.0f, string? apiKey = null)
+    public ChatLlm(string model = "gpt-4o", float temperature = 0.0f, string? apiKey = null)
     {
         _model = model;
         _temperature = temperature;

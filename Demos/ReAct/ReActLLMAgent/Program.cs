@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using SimpleLLMAgents;
+﻿﻿using SimpleLLMAgents;
 using SimpleLLMAgents.Tools;
 
 // Get API key from environment variable or prompt user to enter it

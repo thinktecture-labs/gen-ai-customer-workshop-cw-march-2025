@@ -1,10 +1,6 @@
-using DotNetEnv;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 public class Program
 {
@@ -15,8 +11,10 @@ public class Program
             DotNetEnv.Env.Load();
 
             var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
-            var apiEndpoint = Environment.GetEnvironmentVariable("OPENAI_API_ENDPOINT") ?? "https://api.openai.com/v1";
-            var modelName = Environment.GetEnvironmentVariable("OPENAI_MODEL") ?? "gpt-4o";
+            var apiEndpoint =
+                Environment.GetEnvironmentVariable("OPENAI_API_ENDPOINT")
+                ?? "https://api.openai.com/v1";
+            var modelName = Environment.GetEnvironmentVariable("OPENAI_MODEL") ?? "gpt-4.1";
 
             if (string.IsNullOrEmpty(apiKey))
             {
@@ -37,14 +35,21 @@ public class Program
 
     private static Kernel CreateKernel(string apiKey, string apiEndpoint, string modelName)
     {
-        var httpClient = new HttpClient(new HttpClientHandler { Proxy = new LocalDebuggingProxy() });
+        var httpClient = new HttpClient(
+            new HttpClientHandler { Proxy = new LocalDebuggingProxy() }
+        );
 
         var builder = Kernel.CreateBuilder();
-        
+
         // Suppress experimental API warning
-        #pragma warning disable SKEXP0010
-        builder.AddOpenAIChatCompletion(modelName, new Uri(apiEndpoint), apiKey, httpClient: httpClient);
-        #pragma warning restore SKEXP0010
+#pragma warning disable SKEXP0010
+        builder.AddOpenAIChatCompletion(
+            modelName,
+            new Uri(apiEndpoint),
+            apiKey,
+            httpClient: httpClient
+        );
+#pragma warning restore SKEXP0010
 
         builder.Plugins.AddFromType<EmployeePlugin>("Employees");
         builder.Plugins.AddFromType<BookingPlugin>("Bookings");
@@ -60,9 +65,11 @@ public class Program
         Console.WriteLine();
 
         var chatHistory = new ChatHistory();
-        chatHistory.AddSystemMessage(@"You're a friendly, helpful chat assistant.
+        chatHistory.AddSystemMessage(
+            @"You're a friendly, helpful chat assistant.
             Only answer questions that relate to your tools, functions, and plugins — no other questions!
-            Only use the tools you are explicitly provided.");
+            Only list and use the tools you are explicitly provided with as functions in the request."
+        );
         chatHistory.AddSystemMessage($"Today is {DateTime.Now:D}.");
 
         var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
@@ -84,14 +91,15 @@ public class Program
                 var response = await chatCompletionService.GetChatMessageContentAsync(
                     chatHistory,
                     new OpenAIPromptExecutionSettings
-                    {
+                    { 
                         ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
-                        Temperature = 0
+                        Temperature = 0,
                     },
-                    kernel);
+                    kernel
+                );
 
                 chatHistory.AddAssistantMessage(response.Content ?? string.Empty);
-                
+
                 Console.WriteLine($"Agent output: {response.Content}");
             }
             catch (Exception ex)
